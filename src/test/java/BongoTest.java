@@ -8,36 +8,39 @@ import org.testng.annotations.Test;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class BongoTest {
 
     @Test
     public void test() throws URISyntaxException {
+        WebDriver driver = null;
+        try {
+            Eyes eyes = new Eyes();
+            eyes.setBranchName("BongoBranch" + getLimitedIndex(currentBranchIndex, 10));
+            eyes.setServerUrl(new URI("https://eyes.applitools.com"));
+            eyes.setApiKey("pYhNeRI8AJIwNMX1tSuHc4BkV7JTkB97SZatyfoXTYjE110");
+            eyes.setLogHandler(new StdoutLogHandler(false));
+            BatchInfo batchInfo = new BatchInfo("Large images batch");
+            batchInfo.setId(UUID.randomUUID().toString().substring(0, 10));
+            eyes.setBatch(batchInfo);
+            driver = new ChromeDriver();
+            driver.get("https://www.smashingmagazine.com/2017/05/long-scrolling/");
 
-        System.out.println("Log num 1");
-        System.setProperty("webdriver.chrome.driver","/home/travis/build/chromedriver");
-        Eyes eyes = new Eyes();
-        eyes.setBranchName("BongoBranch" + getLimitedIndex(currentBranchIndex, 10));
-        eyes.setServerUrl(new URI("https://test2eyes.applitools.com"));
-        eyes.setApiKey(System.getenv("APPLITOOLS_API_KEY"));
-        eyes.setLogHandler(new StdoutLogHandler(false));
-        BatchInfo batchInfo = new BatchInfo("Large images batch");
-        batchInfo.setId("12345");
-        eyes.setBatch(batchInfo);
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.smashingmagazine.com/2017/05/long-scrolling/");
-
-        for (int i = 0; i < 100; i++) {
-            try {
-                int testIndex = getInfiniteIndex(currentTestIndex);
-                int appIndex = getLimitedIndex(currentAppIndex, 30);
-                eyes.open(driver, "LargePage - " + appIndex, "page - " + testIndex);
-                eyes.check(Target.window().fully());
-                eyes.close(false);
-            } finally {
-                eyes.abortIfNotClosed();
+            for (int i = 0; i < 100; i++) {
+                try {
+                    int testIndex = getInfiniteIndex(currentTestIndex);
+                    int appIndex = getLimitedIndex(currentAppIndex, 30);
+                    eyes.open(driver, "LargePage - " + appIndex, "page - " + testIndex);
+                    eyes.check(Target.window().fully());
+                    eyes.close(false);
+                } finally {
+                    eyes.abortIfNotClosed();
+                }
             }
+        } finally {
+            driver.close();
         }
     }
 
