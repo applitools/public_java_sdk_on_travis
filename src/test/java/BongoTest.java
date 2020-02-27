@@ -18,7 +18,7 @@ public class BongoTest {
         Eyes eyes = new Eyes();
         eyes.setBranchName("BongoBranch" + getLimitedIndex(currentBranchIndex, 10));
         eyes.setServerUrl(new URI("https://test2eyes.applitools.com"));
-        eyes.setApiKey("pYhNeRI8AJIwNMX1tSuHc4BkV7JTkB97SZatyfoXTYjE110");
+        eyes.setApiKey(System.getenv("APPLITOOLS_API_KEY"));
         eyes.setLogHandler(new StdoutLogHandler(false));
         BatchInfo batchInfo = new BatchInfo("Large images batch");
         batchInfo.setId("12345");
