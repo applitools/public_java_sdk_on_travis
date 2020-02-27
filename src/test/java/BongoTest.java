@@ -15,6 +15,7 @@ public class BongoTest {
     @Test
     public void test() throws URISyntaxException {
 
+        System.setProperty("webdriver.chrome.driver","/home/travis/build/chromedriver");
         Eyes eyes = new Eyes();
         eyes.setBranchName("BongoBranch" + getLimitedIndex(currentBranchIndex, 10));
         eyes.setServerUrl(new URI("https://test2eyes.applitools.com"));

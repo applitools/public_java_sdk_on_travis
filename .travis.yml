@@ -20,4 +20,5 @@ jobs:
         - chmod +x /home/travis/build/chromedriver
         - /home/travis/build/chromedriver --version
         - env webdriver.chrome.driver=/home/travis/build/
+        - ls /home/travis/build/
         - mvn test -e -X
